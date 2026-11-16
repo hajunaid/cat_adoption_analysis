@@ -20,9 +20,10 @@ cats["Adoption Site"] = cats["Adoption Site"].str.strip().str.replace(r"\s*-\s*"
 print(f"Total Valid Cat Records: {len(cats)}")
 print("\nAge Group Breakdown:\n", cats["Age Group"].value_counts())
 print("\nPlacement Type Breakdown:\n", cats["Single or Double Adoption"].value_counts())
-print("\nValid Length of Stay Summary (Days):\n", cats["LOS_Days"].dropna().describe())
+print("\nAdoptions by Year:\n", cats["Adoption_Clean"].dt.year.value_counts().sort_index())
+print("\nMedian Length of Stay by Age Group:\n", cats.groupby("Age Group")["LOS_Days"].agg(["count", "median", "mean"]))
 
-# 5. Generate summary visualizations
+# 5. Chart 1: Demographics & Placement Overview
 fig, axes = plt.subplots(1, 3, figsize=(16, 5))
 
 age_counts = cats["Age Group"].value_counts()
@@ -42,4 +43,35 @@ axes[2].set_ylabel("Count")
 
 plt.tight_layout()
 plt.savefig("cat_overview_charts.png", dpi=150)
-print("\nSaved summary chart to cat_overview_charts.png")
+
+# 6. Chart 2: Adoption Timeline, Seasonality & Length of Stay by Age
+fig, axes = plt.subplots(1, 3, figsize=(17, 5))
+
+year_counts = cats["Adoption_Clean"].dropna().dt.year.astype(int).value_counts().sort_index()
+sns.barplot(x=year_counts.index.astype(str), y=year_counts.values, ax=axes[0], color="#2b5c8f")
+axes[0].set_title("Adoptions by Year (n = 538)")
+axes[0].set_xlabel("Year")
+axes[0].set_ylabel("Number of Adoptions")
+axes[0].tick_params(axis="x", rotation=45)
+
+month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+month_counts = cats["Adoption_Clean"].dropna().dt.month.value_counts().reindex(range(1, 13), fill_value=0)
+sns.barplot(x=month_order, y=month_counts.values, ax=axes[1], color="#3b8ea5")
+axes[1].set_title("Seasonality: Adoptions by Month")
+axes[1].set_xlabel("Month")
+axes[1].set_ylabel("Number of Adoptions")
+
+los_age = (
+    cats[cats["Age Group"].isin(["Kitten", "Juvenile", "Adult"])]
+    .groupby("Age Group")["LOS_Days"]
+    .median()
+    .reindex(["Kitten", "Juvenile", "Adult"])
+)
+sns.barplot(x=los_age.index, y=los_age.values, ax=axes[2], palette=["#4c9f70", "#e08e45", "#c84b31"])
+axes[2].set_title("Median Length of Stay by Age Group (n = 314)")
+axes[2].set_xlabel("Age Group")
+axes[2].set_ylabel("Median Days in Care")
+
+plt.tight_layout()
+plt.savefig("cat_adoption_timeline.png", dpi=150)
+print("\nSaved charts to cat_overview_charts.png and cat_adoption_timeline.png")
