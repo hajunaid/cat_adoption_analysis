@@ -1,6 +1,3 @@
-# cat_adoption_analysis
-Analysis of adoption data from AA
-
 # 🐱 Cat Adoption & Shelter Outcomes Analysis
 
 An exploratory data analysis (EDA) project examining intake, medical screening, foster-to-adopt workflows, and placement outcomes for **602 rescued cats** (spanning 2007–2025).
@@ -11,9 +8,9 @@ An exploratory data analysis (EDA) project examining intake, medical screening, 
 * **Total Valid Cat Records:** 602 (after filtering out 158 blank spreadsheet template rows)
 * **Adoption Date Range:** March 2011 – August 2025
 * **Key Insights:**
-  * **Kitten-Heavy Intake:** 69.6% of records are Kittens ($n=419$), followed by Juveniles ($n=111$) and Adults ($n=71$).
-  * **High Pair Adoption Rate:** Nearly half of all placements (**48.5%**, $n=283$) were **Double Adoptions**, alongside 9 Triple adoptions.
-  * **Shelter Stay:** Among records with valid intake and adoption dates ($n=338$), the median length of stay before adoption is **82.5 days**.
+  * **Kitten-Heavy Intake:** 69.6% of records are Kittens (419), followed by Juveniles (111) and Adults (71).
+  * **High Pair Adoption Rate:** Nearly half of all placements (**48.5%**, 283 cats) were **Double Adoptions**, alongside 9 Triple adoptions.
+  * **Shelter Stay:** Among records with valid intake and adoption dates (338 cats), the median length of stay before adoption is **82.5 days**.
 
 ## 🗂️ Data Dictionary
 
